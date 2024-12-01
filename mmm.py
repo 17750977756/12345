@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # 获取 LM stdio API 密钥和 URL（可以在环境变量中设置）
 API_KEY = "lm-studio"  # 使用环境变量存储 API 密钥
-API_URL = "http://llll.natapp1.cc/v1/chat/completions" # 默认本地 URL
+API_URL = "http://ruanyixindmx.natapp1.cc/v1/chat/completions" # 默认本地 URL
 MODEL_NAME = "llama-3.2-3b-instruct"  # 默认模型名称
 
 # 检查 API 密钥和模型名称是否设置
