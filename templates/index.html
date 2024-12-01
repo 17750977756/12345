@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LM stdio Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>与 LM stdio 聊天</h1>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <!-- 聊天记录将显示在这里 -->
+        </div>
+        <form id="chat-form" class="chat-form">
+            <input type="text" id="message" class="message-input" placeholder="输入您的消息..." required />
+            <button type="submit" class="send-btn">发送</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#chat-form').submit(function(e){
+                e.preventDefault();
+                var message = $('#message').val();
+                $('#message').val('');
+                $('#chat-box').append('<div class="user-message"><strong>您:</strong> ' + message + '</div>');
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);  // 滚动到最新消息
+
+                $.ajax({
+                    url: '/api/chat',  // 向 Vercel 的无服务器函数发送请求
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message: message }),
+                    success: function(response){
+                        $('#chat-box').append('<div class="bot-message"><strong>LM stdio:</strong> ' + response.reply + '</div>');
+                        $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);  // 滚动到最新消息
+                    },
+                    error: function(){
+                        $('#chat-box').append('<div class="bot-message"><strong>错误:</strong> 请求失败，请稍后再试。</div>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
